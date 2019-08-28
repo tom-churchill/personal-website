@@ -1,0 +1,351 @@
+/*
+----------
+Variables
+----------
+*/
+
+$header-animation-speed: 0.4s;
+$cell-animation-speed: 1.5s;
+$about-animation-speed: 1.5s;
+$pop-in-speed: 2.4s;
+$pop-in-delay: 0.15s;
+$white-line-colour: #c3c3c3;
+$white-text-colour: #e6e6e6;
+$header-width: 300;
+$minimum-cell-width: 300;
+$cell-spacing: 5px;
+
+$header-size-infos: (
+    // $screen-min-width, $screen-scale, $columns
+    (900px, 0.8, 2),
+    (1200px, 1, 3),
+);
+
+$default-header-scale: 0.5;
+$default-columns: 1;
+
+/*
+----------
+Layout
+----------
+*/
+
+
+html, body {
+    margin: 0;
+    padding: 0;
+    line-height: 0;
+    background-color: black;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 100;
+    color: $white-text-colour;
+    height: 100vh;
+}
+
+// firefox doesnt handle transform scale very well, so just increase the font weight to make it less noticeable
+@-moz-document url-prefix() {
+    html, body {
+        font-weight: 200;
+    }
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.header {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    text-align: center;
+    font-size: 35px;
+    line-height: 60px;
+}
+
+.content {
+    position: absolute;
+    top: 0;
+    left: 300px;
+    right: 0;
+    bottom: 0;
+}
+
+/*
+----------
+Header
+----------
+*/
+
+.header .photo {
+    width: 140px;
+    height: 140px;
+    min-height: 140px;
+    margin: 60px auto 0;
+}
+
+.header .logo {
+    z-index: 2;
+    line-height: 30px;
+    font-size: 21px;
+    cursor: default;
+    margin: 10px auto 40px;
+}
+
+.header .menu-item {
+    cursor: pointer;
+
+    transition: transform $header-animation-speed;
+}
+
+.header .menu-item:hover {
+    transform: scale(1.1);
+}
+
+.header .menu-item > span {
+    position: relative;
+}
+
+.header .menu-item > span::before {
+    content: "";
+    display: inline-block;
+    border-bottom: 1px solid transparent;
+    position: absolute;
+    top: 0;
+    bottom: 1px;
+    left: 0;
+    right: 0;
+    transition: border-bottom $header-animation-speed;
+}
+
+.header .menu-item.on > span::before {
+    border-bottom: 1px solid $white-line-colour;
+}
+
+.header .menu-item.show-about {
+    margin-top: 25px;
+}
+
+/*
+----------
+Cell
+----------
+*/
+
+.cells {
+    font-size: 0;
+    flex: 1 1 auto;
+}
+
+.cell {
+    position: absolute;
+    overflow: hidden;
+    user-select: none;
+    mix-blend-mode: screen;
+    will-change: transform, opacity, width;
+    opacity: 0;
+}
+
+.cell-contents {
+    position: absolute;
+    left: $cell-spacing;
+    top: $cell-spacing;
+    right: $cell-spacing;
+    bottom: $cell-spacing;
+    line-height: normal;
+    cursor: pointer;
+    overflow: hidden;
+    opacity: 0;
+
+}
+
+@for $i from 1 through 20 {
+    $delay: 0s + (($i - 1) * $pop-in-delay * 1);
+
+    .enable-animation .cell:nth-child(#{$i}) .cell-contents {
+        opacity: 1;
+        transition: opacity $pop-in-speed;
+        transition-delay: $delay;
+    }
+}
+
+.cell .cell-background {
+    width: 100%;
+    filter: brightness(1);
+    position: absolute;
+
+    transition: transform $cell-animation-speed, filter $cell-animation-speed;
+}
+
+.cell:hover .cell-background {
+    transform: scale(1.03);
+}
+
+.cell .project-name {
+    color: white;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    opacity: 0;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    text-shadow: 0 0 20px #ffffff8a;
+    transition: opacity $cell-animation-speed, transform $cell-animation-speed;
+    margin: 11%;
+    font-size: calc(9vw / #{$default-columns});
+
+    @each $screen-min-width, $screen-scale, $columns in $header-size-infos {
+        @media screen and (min-width: $screen-min-width) {
+            font-size: calc(9vw / #{$columns});
+        }
+    }
+}
+
+
+.cell.light .project-name {
+    color: white;
+    filter: drop-shadow(0px 0px 15px black) drop-shadow(0px 0px 15px black);
+    text-shadow: none;
+}
+
+// ie11 doesn't support filter drop shadow so use text-shadow instead
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+	.cell.light .project-name {
+        text-shadow: 0 0 30px #000, 0 0 30px #000, 0 0 30px #000, 0 0 30px #000;
+    }
+}
+
+.cell:hover .project-name {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.cell .inner-shadow {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    transition: box-shadow $cell-animation-speed;
+}
+
+.cell:hover .inner-shadow {
+    box-shadow: inset 0 0 59px #191818ab;
+}
+
+.cell:hover.light .inner-shadow {
+    box-shadow: inset 0 0 59px #000000ab
+}
+
+/*
+----------
+About
+----------
+*/
+
+.about {
+    background-color: #00000000;
+    z-index: 4;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    line-height: normal;
+    color: white;
+    left: 300px;
+    right: 0;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    font-size: 23px * $default-header-scale;
+
+    @each $screen-min-width, $screen-scale, $columns in $header-size-infos {
+        @media screen and (min-width: $screen-min-width) {
+            font-size: 23px  * $screen-scale;
+        }
+    }
+}
+
+// edge has a bug where it will fade out the opacity rather than be initially set as transparent, work around to that
+// by enabling the animation slightly later
+.enable-animation .about {
+    transition: opacity $about-animation-speed;
+}
+
+.about.show {
+    pointer-events: all;
+    opacity: 1;
+}
+
+.about .visit-page a {
+    font-size: 1.3em;
+    color: white;
+    text-decoration: none;
+    box-shadow: inset 0 -1px #c3c3c3;
+}
+
+.about .about-title {
+    font-size: 2.7em;
+}
+
+.about .description-line {
+    margin-top: 1em;
+}
+
+.about .about-description-text {
+    max-width: 700px;
+    text-align: center;
+    padding: 72px * $default-header-scale;
+
+    @each $screen-min-width, $screen-scale, $columns in $header-size-infos {
+        @media screen and (min-width: $screen-min-width) {
+            padding: 72px * $screen-scale;
+        }
+    }
+}
+
+.about .about-description-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.about .about-inner {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: black;
+    overflow: hidden;
+}
+
+.about .about-inner > img{
+    width: 100%;
+    opacity: 0.3;
+}
+
+.about.about-contact .description-line, .about.about-contact .visit-page {
+    margin-top: 1.5em;
+}

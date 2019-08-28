@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--
+        Hello, you can find the source code for this website here:
+        https://github.com/tom-churchill/personal-website
+        -->
+        <link rel="stylesheet" href="/static/styles.css">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200" rel="stylesheet">
+        <title>Work Portfolio</title>
+
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-44469189-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-44469189-1');
+        </script>
+    </head>
+    <body>
+        <div class="header">
+            <div class="photo"><img src="/static/photo.jpg" ></div>
+            <div class="logo"><span>TOM CHURCHILL</span></div>
+            <div class="menu-item filter show-website"><span>WEB</span></div>
+            <div class="menu-item filter show-unity3d"><span>UNITY3D</span></div>
+            <div class="menu-item filter show-software"><span>SOFTWARE</span></div>
+            <div class="menu-item show-about"><span>CONTACT</span></div>
+        </div>
+        <div class="content">
+            <div class="cells">
+                {% for project in projects %}
+                    <div class="cell {{ project.tags }}" data-cell-id="{{ project.cell_id }}">
+                        <div class="cell-contents">
+                            <img class="cell-background" src="{{ project.base64_image }}" alt="" />
+                            <img class="cell-background" src="/static/cell-{{ project.cell_id }}.jpg" alt="" />
+                            <div class="project-name">{{ project.name | upper }}</div>
+                            <div class="inner-shadow"></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="about-list">
+                <div class="about about-contact">
+                    <div class="about-inner">
+                        <img src="/static/cell-0.jpg" alt="" />
+                        <div class="about-description-container">
+                            <div class="about-description-text">
+                                <div class="about-title">Hello</div>
+                                <div class="description-line">You can contact me at: </div>
+                                <div class="visit-page"><a href="mailto:tom@tomchurchill.co.uk" target="_blank" >tom@tomchurchill.co.uk</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% for project in projects %}
+                    <div class="about about-{{ project.cell_id }}">
+                        <div class="about-inner">
+                            <img src="/static/cell-{{ project.cell_id }}.jpg" alt="" />
+                            <div class="about-description-container">
+                                <div class="about-description-text">
+                                    <div class="about-title">{{ project.name }}</div>
+                                    <div class="description-line">{{ project.description_line_1 }}</div>
+                                    <div class="description-line">{{ project.description_line_2 }}</div>
+                                    <div class="description-line">{{ project.description_line_3 }}</div>
+                                    <div class="description-line">{{ project.description_line_4 }}</div>
+                                    <div class="visit-page"><a href="{{ project.url }}" target="_blank" >View Project</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <script src="{{ url_for('static', filename='main.js') }}"></script>
+    </body>
+</html>
