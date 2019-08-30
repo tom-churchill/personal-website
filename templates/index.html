@@ -33,7 +33,7 @@
                     <div class="cell {{ project.tags }}" data-cell-id="{{ project.cell_id }}">
                         <div class="cell-contents">
                             <img class="cell-background" src="{{ project.base64_image }}" alt="" />
-                            <img class="cell-background" src="/static/cell-{{ project.cell_id }}.jpg" alt="" />
+                            <img class="cell-background" src="/static/cell-{{ project.cell_id }}.{{ project.image_format }}" alt="" />
                             <div class="project-name">{{ project.name | upper }}</div>
                             <div class="inner-shadow"></div>
                         </div>
@@ -56,7 +56,7 @@
                 {% for project in projects %}
                     <div class="about about-{{ project.cell_id }}">
                         <div class="about-inner">
-                            <img src="/static/cell-{{ project.cell_id }}.jpg" alt="" />
+                            <img src="/static/cell-{{ project.cell_id }}.{{ project.image_format }}" alt="" />
                             <div class="about-description-container">
                                 <div class="about-description-text">
                                     <div class="about-title">{{ project.name }}</div>

@@ -21,6 +21,7 @@ class Project(db.Model):
     description_line_4 = db.Column(db.String(1000), nullable=False)
     order = db.Column(db.Integer)
     base64_image = db.Column(db.String(100000), nullable=True)
+    image_format = db.Column(db.String(80), nullable=True)
 
     def __repr__(self):
         return '<Project %r>' % self.name
@@ -50,6 +51,7 @@ def create_base64_images():
     import base64
 
     projects = Project.query.filter().order_by(Project.order.desc())
+
     for project in projects:
         if project.base64_image is None or True:
             infile = os.path.join('src', 'images', f'cell-{project.cell_id}.png')
