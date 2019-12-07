@@ -122,6 +122,7 @@ class LayoutManager {
     document.querySelectorAll(LayoutManager.aboutViewsSelector).forEach(aboutItem => {
       aboutItem.addEventListener('click', () => {
         aboutItem.classList.remove(LayoutManager.aboutViewEnabledClass);
+        this.contactLink.classList.remove(LayoutManager.menuItemSelectedClass);
       });
     });
 
@@ -188,7 +189,7 @@ class LayoutManager {
   // find out how many columns to use based upon the page width
   private GetColumnCount = () => {
     const width = this.container.clientWidth;
-    const headerWidth = 300;
+    const headerWidth = 250;
     const minimumCellWidth = 300;
 
     if (width > headerWidth + minimumCellWidth * 3) {

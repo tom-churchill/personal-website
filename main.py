@@ -22,6 +22,7 @@ class Project(db.Model):
     order = db.Column(db.Integer)
     base64_image = db.Column(db.String(100000), nullable=True)
     image_format = db.Column(db.String(80), nullable=True)
+    disabled = db.Column(db.Boolean)
 
     def __repr__(self):
         return '<Project %r>' % self.name
@@ -71,7 +72,8 @@ def create_base64_images():
 
 
 def get_page_html():
-    projects = Project.query.filter().order_by(Project.order.desc())
+    projects = Project.query.filter(Project.disabled==False).order_by(Project.order.desc())
+    print(projects)
     return render_template('index.html', projects=projects)
 
 

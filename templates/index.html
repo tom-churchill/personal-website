@@ -7,7 +7,7 @@
         -->
         <link rel="stylesheet" href="/static/styles.css">
         <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200" rel="stylesheet">
-        <title>Work Portfolio</title>
+        <title>Tom Churchill - Portfolio</title>
 
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-44469189-1"></script>
         <script>
@@ -21,21 +21,20 @@
     <body>
         <div class="header">
             <div class="photo"><img src="/static/photo.jpg" ></div>
-            <div class="logo"><span>TOM CHURCHILL</span></div>
             <div class="menu-item filter show-website"><span>WEB</span></div>
             <div class="menu-item filter show-unity3d"><span>UNITY3D</span></div>
             <div class="menu-item filter show-software"><span>SOFTWARE</span></div>
-            <div class="menu-item show-about"><span>CONTACT</span></div>
+            <div class="menu-item show-about"><span>ABOUT</span></div>
         </div>
         <div class="content">
             <div class="cells">
                 {% for project in projects %}
-                    <div class="cell {{ project.tags }}" data-cell-id="{{ project.cell_id }}">
+                    <div class="cell light {{ project.tags }}" data-cell-id="{{ project.cell_id }}">
                         <div class="cell-contents">
                             <img class="cell-background" src="{{ project.base64_image }}" alt="" />
                             <img class="cell-background" src="/static/cell-{{ project.cell_id }}.{{ project.image_format }}" alt="" />
-                            <div class="project-name">{{ project.name | upper }}</div>
                             <div class="inner-shadow"></div>
+                            <div class="project-name">{{ project.name | upper }}</div>
                         </div>
                     </div>
                 {% endfor %}
@@ -64,7 +63,9 @@
                                     <div class="description-line">{{ project.description_line_2 }}</div>
                                     <div class="description-line">{{ project.description_line_3 }}</div>
                                     <div class="description-line">{{ project.description_line_4 }}</div>
-                                    <div class="visit-page"><a href="{{ project.url }}" target="_blank" >View Project</a></div>
+                                    {% if project.url %}
+                                        <div class="visit-page"><a href="{{ project.url }}" target="_blank" >View Project</a></div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
